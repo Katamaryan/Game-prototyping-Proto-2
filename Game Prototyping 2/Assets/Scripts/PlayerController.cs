@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform m_camTransform;
     [SerializeField] private CinemachineOrbitalFollow m_orbital;
     [SerializeField] private float m_camAngle;
-
+  
     private Vector2 m_input;
     private Vector3 m_move;
     
@@ -36,29 +36,35 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDirection = m_camTransform.forward.normalized * m_input + m_camTransform.right.normalized * m_input;
         moveDirection = transform.TransformDirection(moveDirection);
+ 
 
+
+
+
+        m_rb.rotation = Quaternion.Euler(0, m_camTransform.rotation.eulerAngles.y, 0);
         if (m_input == Vector2.up)
         {
-            m_rb.rotation = Quaternion.Euler(0, m_camTransform.rotation.eulerAngles.y, 0);
+            
             m_rb.MovePosition(m_rb.position += transform.forward * (moveDirection.magnitude * m_moveSpeed * Time.deltaTime));
+
         }
 
         else if (m_input == Vector2.right)
         {
-            m_rb.MovePosition(m_rb.position += transform.right * (moveDirection.magnitude * m_moveSpeed *Time.deltaTime));
+            m_rb.MovePosition(m_rb.position += transform.right * (moveDirection.magnitude * m_moveSpeed * Time.deltaTime));
         }
 
         else if (m_input == Vector2.down)
         {
-            m_rb.MovePosition(m_rb.position += -transform.forward * (moveDirection.magnitude * m_moveSpeed *Time.deltaTime));
+            m_rb.MovePosition(m_rb.position += -transform.forward * (moveDirection.magnitude * m_moveSpeed * Time.deltaTime));
         }
 
         else if (m_input == Vector2.left)
         {
-            m_rb.MovePosition(m_rb.position += -transform.right * (moveDirection.magnitude * m_moveSpeed *Time.deltaTime));
+            m_rb.MovePosition(m_rb.position += -transform.right * (moveDirection.magnitude * m_moveSpeed * Time.deltaTime));
         }
 
-        
+
 
     }
 

@@ -10,12 +10,13 @@ public class PlayerController : MonoBehaviour
     private CharacterController m_cc; //im too lazy to write all that everytime
 
     [SerializeField] private Transform m_camTransform;
-    [SerializeField] private CinemachineOrbitalFollow m_orbital;
     [SerializeField] private float m_camAngle;
   
     private Vector2 m_input;
     private Vector3 m_move;
-    
+
+    private Vector3 m_playerVelocity;
+
     [SerializeField] private float m_moveSpeed;
     [SerializeField] private float m_rotateSpeed;
 
@@ -26,45 +27,31 @@ public class PlayerController : MonoBehaviour
     {
         m_rb = GetComponent<Rigidbody>();
         m_playerInput = GetComponent<PlayerInput>();
-        m_orbital = GameObject.Find("ThirdPersonCamera").GetComponent<CinemachineOrbitalFollow>();
+        m_cc = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //m_rb.MovePosition();
+        bool groundedPlayer = m_cc.isGrounded;
 
-        Vector3 moveDirection = m_camTransform.forward.normalized * m_input + m_camTransform.right.normalized * m_input;
-        moveDirection = transform.TransformDirection(moveDirection);
- 
-
-
-
-
-        m_rb.rotation = Quaternion.Euler(0, m_camTransform.rotation.eulerAngles.y, 0);
-        if (m_input == Vector2.up)
+        if (groundedPlayer)
         {
-            
-            m_rb.MovePosition(m_rb.position += transform.forward * (moveDirection.magnitude * m_moveSpeed * Time.deltaTime));
-
+            if (m_playerVelocity.y < -2f)
+                m_playerVelocity.y = -2f;
         }
 
-        else if (m_input == Vector2.right)
-        {
-            m_rb.MovePosition(m_rb.position += transform.right * (moveDirection.magnitude * m_moveSpeed * Time.deltaTime));
-        }
+        m_move = new Vector3(m_input.x, 0, m_input.y);
+        m_move = Vector3.ClampMagnitude(m_move, 1f);
+        m_move = m_camTransform.TransformDirection(m_move);
 
-        else if (m_input == Vector2.down)
-        {
-            m_rb.MovePosition(m_rb.position += -transform.forward * (moveDirection.magnitude * m_moveSpeed * Time.deltaTime));
-        }
+        if (m_move != Vector3.zero)
+            transform.forward = m_move;
 
-        else if (m_input == Vector2.left)
-        {
-            m_rb.MovePosition(m_rb.position += -transform.right * (moveDirection.magnitude * m_moveSpeed * Time.deltaTime));
-        }
+        m_playerVelocity.y += -9.8f * Time.deltaTime;
 
-
+        m_cc.Move((m_move * m_moveSpeed) * Time.deltaTime + Vector3.up * m_playerVelocity.y);
+        transform.rotation = Quaternion.Euler(0, m_camTransform.rotation.eulerAngles.y, 0);
 
     }
 

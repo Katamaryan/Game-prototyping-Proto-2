@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     private CharacterController m_cc; //im too lazy to write all that everytime
 
     [SerializeField] private Transform m_camTransform;
-    [SerializeField] private float m_camAngle;
   
     private Vector2 m_input;
     private Vector3 m_move;
@@ -18,7 +17,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 m_playerVelocity;
 
     [SerializeField] private float m_moveSpeed;
-    [SerializeField] private float m_rotateSpeed;
 
 
 

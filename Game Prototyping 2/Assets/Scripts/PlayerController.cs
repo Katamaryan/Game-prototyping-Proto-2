@@ -58,12 +58,10 @@ public class PlayerController : MonoBehaviour
         if (ctx.performed)
         {
             m_input = ctx.ReadValue<Vector2>();
-            Debug.Log(ctx.ReadValue<Vector2>());
         }
         if (ctx.canceled)
         {
             m_input = ctx.ReadValue<Vector2>();
-            Debug.Log(ctx.ReadValue<Vector2>());
         }
     }
 }

@@ -42,13 +42,4 @@ public class CameraController : MonoBehaviour
         if (m_orbital != null) m_orbital.Radius = m_currentZoom;
     }
 
-    public void Handle_ZoomPerformed(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            m_scrollDelta = ctx.ReadValue<Vector2>();
-        }
-    }
-
-
 }
